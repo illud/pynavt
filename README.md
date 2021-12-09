@@ -35,7 +35,7 @@ Pynavt requires [Python](https://www.python.org/) 3.6 to run.
 Install the dependencies.
 
 ```sh
-pip install Pynavt
+pip install pynavt
 ```
 
 
