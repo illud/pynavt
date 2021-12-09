@@ -1,4 +1,4 @@
-from setuptools import setup
+from setuptools import setup, find_packages
 
 setup(
     name='pynavt',
@@ -6,7 +6,9 @@ setup(
     author='Alejandro Castillo Valdes',
     author_email='saturnavt@gmail.com',
     description='pynavt is a tool to create a clean architecture project and auto generating modules',
-    url = 'https://github.com/saturnavt/pynavt',
+    license='MIT',
+    url='https://github.com/saturnavt/pynavt',
+    packages=find_packages(),
     py_modules=['pynavt', 'base'],
     install_requires=[
         'click',
@@ -16,6 +18,6 @@ setup(
     ],
     entry_points='''
         [console_scripts]
-        pynavt=pynavt:main
+        pynavt=pynavt.__init__:main
     ''',
 )

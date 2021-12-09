@@ -2,7 +2,7 @@ import click
 import os
 
 # base
-from base import base_data, base_data_module, base_data_app
+from pynavt.base import base_data, base_data_module, base_data_app
 
 """
   _____                         _   
