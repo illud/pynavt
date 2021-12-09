@@ -1,11 +1,18 @@
 from setuptools import setup, find_packages
 
+# readme.me
+with open("README.md", "r") as fh:
+    long_description = fh.read()
+
+
 setup(
     name='pynavt',
-    version='1.0.0',
+    version='1.0.2',
     author='Alejandro Castillo Valdes',
     author_email='saturnavt@gmail.com',
     description='pynavt is a tool to create a clean architecture project and auto generating modules',
+    long_description=long_description,
+    long_description_content_type="text/markdown",
     license='MIT',
     url='https://github.com/saturnavt/pynavt',
     packages=find_packages(),
