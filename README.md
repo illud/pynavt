@@ -44,7 +44,7 @@ pip install pynavt
 In your terminal type to see all avaible commands:
 
 ```sh
-pynavt
+pynavt --help
 ```
 
 To create a new Fastapi with clean architecture project(This includes a crud example with the name of Tasks):
