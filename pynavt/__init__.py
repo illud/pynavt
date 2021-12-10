@@ -2,24 +2,30 @@ import click
 import os
 
 # base
-from pynavt.base import base_data, base_data_module, base_data_app
+from pynavt.base import base_data, base_data_module, base_data_app, base_db_client
 
-"""
-  _____                         _   
- |  __ \                       | |  
- | |__) |   _ _ __   __ ___   _| |_ 
- |  ___/ | | | '_ \ / _` \ \ / / __|
- | |   | |_| | | | | (_| |\ V /| |_ 
- |_|    \__, |_| |_|\__,_| \_/  \__|
-         __/ |                      
-        |___/                       
-"""
+print("""
+      _____                         _   
+     |  __ \                       | |  
+     | |__) |   _ _ __   __ ___   _| |_ 
+     |  ___/ | | | '_ \ / _` \ \ / / __|
+     | |   | |_| | | | | (_| |\ V /| |_ 
+     |_|    \__, |_| |_|\__,_| \_/  \__|
+             __/ |                      
+            |___/ 
+       ----------------------------------
+      |  pynavt --new yourProjectName    |
+      |  pynavt --module yourModuleName  |
+      |  pynavt --client mysql           |
+       ------------=Alejandro Castillo=--                      
+""")
 
 
 @click.command()
 @click.option("--new", help="Generates new project")
 @click.option("--module", help="Generates new module")
-def main(new, module):
+@click.option("--client", help="Generates new database client")
+def main(new, module, client):
     if new != None:
         os.makedirs(new, exist_ok=True)
         print("Project generated")
@@ -88,12 +94,43 @@ def main(new, module):
         open(new + '/utils/errors/' + 'errors.py', 'w')
         print("Utils errors  errors.py generated")
 
-        # services
+        # utils services
         os.makedirs(new + "/utils/services", exist_ok=True)
         print("Services folder generated")
 
+        # utils services bcrypt
+        os.makedirs(new + "/utils/services/bcrypt", exist_ok=True)
+        print("Utils services bcrypt folder generated")
+        # utils services bcrypt.py
+        open(new + '/utils/services/bcrypt/' + 'bcrypt.py', 'w')
+        print("Utils services bcrypt bcrypt.py generated")
+
+        # utils services jwt
+        os.makedirs(new + "/utils/services/jwt", exist_ok=True)
+        print("Utils services jwt folder generated")
+        # utils services jwt.py
+        open(new + '/utils/services/jwt/' + 'jwt.py', 'w')
+        print("Utils services jwt jwt.py generated")
+
         # create base data
         base_data(new)
+
+        # get started
+        print(f"""
+      _____                         _   
+     |  __ \                       | |  
+     | |__) |   _ _ __   __ ___   _| |_ 
+     |  ___/ | | | '_ \ / _` \ \ / / __|
+     | |   | |_| | | | | (_| |\ V /| |_ 
+     |_|    \__, |_| |_|\__,_| \_/  \__|
+             __/ |                      
+            |___/ 
+       ----------------------------------
+      |           Get started            |
+      |            cd {new}              |
+      |     uvicorn app:app --reload     |
+       ------------=Alejandro Castillo=--
+        """)
 
     if module != None:
         directory_path = os.getcwd()
@@ -128,6 +165,9 @@ def main(new, module):
 
         # adds to app.py
         base_data_app(module)
+
+    if client != None:
+        base_db_client(client)
 
 
 if __name__ == '__main__':

@@ -21,7 +21,9 @@ setup(
         'click',
         'fastapi',
         'uvicorn',
-        'pydantic'
+        'pydantic',
+        'bcrypt',
+        'pyjwt'
     ],
     entry_points='''
         [console_scripts]

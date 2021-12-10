@@ -86,6 +86,55 @@ def post_tasks_repository(tasks):
     f.write(repository_tring)
     f.close()
 
+    # bcrypt bcrypt.py
+    bcrypt_tring = """import bcrypt
+
+#hash password
+def hash(password):
+	hashed = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt(10))
+	return hashed
+
+
+# check hashed password
+def check_hash(password, hash):
+	if bcrypt.checkpw(password.encode('utf-8'), hash):
+		return True
+	else:
+		return False
+            """
+    f = open(folderName + "/utils/services/bcrypt/bcrypt.py", "a")
+    print("Bcrypt created")
+    f.write(bcrypt_tring)
+    f.close()
+
+    # jwt jwt.py
+    jwt_tring = """import jwt
+
+
+def generate_token(payload):
+	return jwt.encode({"some": payload}, "secret", algorithm="HS256")
+
+
+def validate_token(token):
+	return jwt.decode(token, "secret", algorithms=["HS256"])
+            """
+    f = open(folderName + "/utils/services/jwt/jwt.py", "a")
+    print("Jwt created")
+    f.write(jwt_tring)
+    f.close()
+
+    # errors errors.py
+    errors_tring = """# You can add your own errors
+bad_request = {"Error": "Bad Request", "Code": 400}
+forbidden = {"Error": "Forbidden", "Code": 403}
+not_found = {"Error": "Not Found", "Code": 404}
+unauthorized = {"Error": "Unauthorized", "Code": 401}
+            """
+    f = open(folderName + "/utils/errors/errors.py", "a")
+    print("Errors created")
+    f.write(errors_tring)
+    f.close()
+
 
 # baseModule
 def base_data_module(moduleName):
@@ -187,3 +236,25 @@ def base_data_app(moduleName):
         f.seek(0)
         for line in lines:
             f.write(line)
+
+
+# db client
+def base_db_client(client):
+    if client == "mysql":
+        # client moduleName client.py
+        db_client_tring = """import mysql.connector
+
+mydb = mysql.connector.connect(
+    host="localhost",
+    user="youruserName",
+    password="yourPassword",
+    database="yourDatabaseName"
+)
+
+db = mydb.cursor(dictionary=True)
+            """
+        f = open(
+            "infraestructure/databases/client.py", "a")
+        print("Mysql client created")
+        f.write(db_client_tring)
+        f.close()
