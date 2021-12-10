@@ -18,6 +18,7 @@ app.include_router(tasks)
     entity_tring = """from pydantic import BaseModel
 
 class Task(BaseModel):
+    id: int
     title: str
     desc: str
     """
@@ -29,7 +30,7 @@ class Task(BaseModel):
     # controllers tasks tasks.controller.py
     controller_tring = """from infraestructure.entities.tasks.tasks_entity import Task
 from fastapi import APIRouter
-from domain.useCase.tasks.tasks_useCase import get_tasks_usecase, post_tasks_usecase
+from domain.useCase.tasks.tasks_useCase import get_tasks_usecase, post_tasks_usecase, delete_tasks_usecase, update_tasks_usecase
 import sys
 sys.path.append('../../')
 
@@ -46,6 +47,15 @@ def get_tasks():
 def post_tasks(tasks: Task):
     return post_tasks_usecase(tasks)
 
+
+@tasks.put("/tasks/{id}")
+def update_tasks(tasks: Task, id):
+    return update_tasks_usecase(tasks, id)
+
+
+@tasks.delete("/tasks/{id}")
+def delete_tasks(id):
+    return delete_tasks_usecase(id)
     """
     f = open(folderName + "/controllers/tasks/tasks_controller.py", "a")
 
@@ -53,7 +63,7 @@ def post_tasks(tasks: Task):
     f.close()
 
     # usecase tasks tasks_useCase.py
-    usecase_tring = """from infraestructure.repository.tasks.tasks_repository import get_tasks_repository, post_tasks_repository
+    usecase_tring = """from infraestructure.repository.tasks.tasks_repository import get_tasks_repository, post_tasks_repository, delete_tasks_repository, update_tasks_repository
 import sys
 sys.path.append('../../../')
 
@@ -64,6 +74,14 @@ def get_tasks_usecase():
 
 def post_tasks_usecase(tasks):
     return post_tasks_repository(tasks)
+
+
+def update_tasks_usecase(tasks, id):
+    return update_tasks_repository(tasks, id)
+
+
+def delete_tasks_usecase(id):
+    return delete_tasks_repository(id)
     """
     f = open(folderName + "/domain/useCase/tasks/tasks_useCase.py", "a")
 
@@ -73,13 +91,31 @@ def post_tasks_usecase(tasks):
     # repository tasks tasks_repository.py
     repository_tring = """tasks_array = []
 
+
 def get_tasks_repository():
     return tasks_array
 
 
 def post_tasks_repository(tasks):
-    tasks_array.append(tasks)
+    tasks_array.append(
+        {"id": tasks.id, "title": tasks.title, "desc": tasks.desc})
     return {"message": "Task Saved"}
+
+
+def update_tasks_repository(tasks, id):
+    for i in range(len(tasks_array)):
+        if tasks_array[i]['id'] == int(id):
+            tasks_array[i]['title'] = tasks.title
+            tasks_array[i]['desc'] = tasks.desc
+    return {"message": "Task Updated"}
+
+
+def delete_tasks_repository(id):
+    for i in range(len(tasks_array)):
+        if tasks_array[i]['id'] == int(id):
+            del tasks_array[i]
+            break
+    return {"message": "Task Deleted"}
     """
     f = open(folderName + "/infraestructure/repository/tasks/tasks_repository.py", "a")
 
@@ -143,6 +179,7 @@ def base_data_module(moduleName):
     entity_tring = f"""from pydantic import BaseModel
 
 class {moduleNameCapitalized}(BaseModel):
+    id: int
     title: str
     desc: str
     """
@@ -155,7 +192,7 @@ class {moduleNameCapitalized}(BaseModel):
     # controllers moduleName moduleName_controller.py
     controller_tring = f"""from infraestructure.entities.{moduleName}.{moduleName}_entity import {moduleNameCapitalized}
 from fastapi import APIRouter
-from domain.useCase.{moduleName}.{moduleName}_useCase import get_{moduleName}_usecase, post_{moduleName}_usecase
+from domain.useCase.{moduleName}.{moduleName}_useCase import get_{moduleName}_usecase, post_{moduleName}_usecase, delete_{moduleName}_usecase, update_{moduleName}_usecase
 import sys
 sys.path.append('../../')
 
@@ -172,6 +209,14 @@ def get_{moduleName}():
 def post_{moduleName}({moduleName}: {moduleNameCapitalized}):
     return post_{moduleName}_usecase({moduleName})
 
+@{moduleName}.put("/{moduleName}/{"{id}"}")
+def update_{moduleName}({moduleName}: {moduleNameCapitalized}, id):
+    return update_{moduleName}_usecase({moduleName}, id)
+
+
+@{moduleName}.delete("/{moduleName}/{"{id}"}")
+def delete_{moduleName}(id):
+    return delete_{moduleName}_usecase(id)
     """
     f = open(f"controllers/{moduleName}/{moduleName}_controller.py", "a")
 
@@ -179,7 +224,7 @@ def post_{moduleName}({moduleName}: {moduleNameCapitalized}):
     f.close()
 
     # usecase moduleName moduleName_useCase.py
-    usecase_tring = f"""from infraestructure.repository.{moduleName}.{moduleName}_repository import get_{moduleName}_repository, post_{moduleName}_repository
+    usecase_tring = f"""from infraestructure.repository.{moduleName}.{moduleName}_repository import get_{moduleName}_repository, post_{moduleName}_repository, delete_{moduleName}_repository, update_{moduleName}_repository
 import sys
 sys.path.append('../../../')
 
@@ -190,6 +235,13 @@ def get_{moduleName}_usecase():
 
 def post_{moduleName}_usecase({moduleName}):
     return post_{moduleName}_repository({moduleName})
+
+def update_{moduleName}_usecase({moduleName}, id):
+    return update_{moduleName}_repository({moduleName}, id)
+
+
+def delete_{moduleName}_usecase(id):
+    return delete_{moduleName}_repository(id)
     """
     f = open(f"domain/useCase/{moduleName}/{moduleName}_useCase.py", "a")
 
@@ -204,9 +256,26 @@ def get_{moduleName}_repository():
 
 
 def post_{moduleName}_repository({moduleName}):
-    {moduleName}_array.append({moduleName})
-    return "Saved"
+    {moduleName}_array.append({"{'id': %s.id, 'title': %s.title, 'desc': %s.desc}" % (moduleName, moduleName, moduleName)})
+    return {"{'message':'Saved'}"}
+
+
+def update_{moduleName}_repository({moduleName}, id):
+    for i in range(len({moduleName}_array)):
+        if {moduleName}_array[i]['id'] == int(id):
+            {moduleName}_array[i]['title'] = {moduleName}.title
+            {moduleName}_array[i]['desc'] = {moduleName}.desc
+    return {"{'message':'Updated'}"}
+
+
+def delete_{moduleName}_repository(id):
+    for i in range(len({moduleName}_array)):
+        if {moduleName}_array[i]['id'] == int(id):
+            del {moduleName}_array[i]
+            break
+    return {"{'message':'Deleted'}"}
     """
+
     f = open(
         f"infraestructure/repository/{moduleName}/{moduleName}_repository.py", "a")
 
