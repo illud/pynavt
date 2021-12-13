@@ -4,7 +4,9 @@ from setuptools import setup, find_packages
 with open("README.md", "r") as fh:
     long_description = fh.read()
 
-
+# twine command
+# python setup.py sdist bdist_wheel
+# twine upload dist/*
 setup(
     name='pynavt',
     version='1.0.5',
