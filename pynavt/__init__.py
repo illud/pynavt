@@ -128,7 +128,7 @@ def main(new, module, client):
        ----------------------------------
       |           Get started            |
       |            cd {new}              |
-      |     uvicorn app:app --reload     |
+      |     uvicorn app:main --reload    |
        ------------=Alejandro Castillo=--
         """)
 
