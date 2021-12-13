@@ -3,11 +3,21 @@ def base_data(folderName):
     app_tring = """from typing import Optional
 
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from controllers.tasks.tasks_controller import tasks
 
 app = FastAPI()
 # tasks
 app.include_router(tasks)
+
+# cors
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
     """
     f = open(folderName + "/main.py", "a")
 

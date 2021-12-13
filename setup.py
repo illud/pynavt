@@ -9,7 +9,7 @@ with open("README.md", "r") as fh:
 # twine upload dist/*
 setup(
     name='pynavt',
-    version='1.0.5',
+    version='1.0.6',
     author='Alejandro Castillo Valdes',
     author_email='saturnavt@gmail.com',
     description='pynavt is a tool to create a clean architecture project and auto generating modules',
