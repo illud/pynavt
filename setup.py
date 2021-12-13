@@ -7,7 +7,7 @@ with open("README.md", "r") as fh:
 
 setup(
     name='pynavt',
-    version='1.0.4',
+    version='1.0.5',
     author='Alejandro Castillo Valdes',
     author_email='saturnavt@gmail.com',
     description='pynavt is a tool to create a clean architecture project and auto generating modules',
