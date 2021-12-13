@@ -1,5 +1,5 @@
 def base_data(folderName):
-    # app.py
+    # main.py
     app_tring = """from typing import Optional
 
 from fastapi import FastAPI
@@ -9,7 +9,7 @@ app = FastAPI()
 # tasks
 app.include_router(tasks)
     """
-    f = open(folderName + "/app.py", "a")
+    f = open(folderName + "/main.py", "a")
 
     f.write(app_tring)
     f.close()
@@ -282,11 +282,11 @@ def delete_{moduleName}_repository(id):
     f.write(repository_tring)
     f.close()
 
-# add modle to app.py
+# add modle to main.py
 
 
 def base_data_app(moduleName):
-    with open('app.py', 'r+') as f:
+    with open('main.py', 'r+') as f:
         lines = f.readlines()
         for i, line in enumerate(lines):
             # router

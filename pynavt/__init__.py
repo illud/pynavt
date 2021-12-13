@@ -29,9 +29,9 @@ def main(new, module, client):
     if new != None:
         os.makedirs(new, exist_ok=True)
         print("Project generated")
-        # app.py
-        open(new + '/' + 'app.py', 'w')
-        print("app.py generated")
+        # main.py
+        open(new + '/' + 'main.py', 'w')
+        print("main.py generated")
 
         # Controllers
         os.makedirs(new + "/controllers", exist_ok=True)
@@ -163,7 +163,7 @@ def main(new, module, client):
         # adds data to module
         base_data_module(module)
 
-        # adds to app.py
+        # adds to main.py
         base_data_app(module)
 
     if client != None:
